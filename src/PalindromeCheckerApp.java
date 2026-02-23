@@ -1,73 +1,32 @@
 public class PalindromeCheckerApp {
 
-    static class Node {
-        char data;
-        Node next;
-
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
     public static void main(String[] args) {
 
-        System.out.println("Palindrome Checker - Use Case 8");
+        System.out.println("Palindrome Checker - Use Case 9");
 
-        String word = "level";
+        String word = "madam";
 
-        Node head = null;
-        Node tail = null;
+        boolean result = isPalindrome(word, 0, word.length() - 1);
 
-        for (int i = 0; i < word.length(); i++) {
-            Node newNode = new Node(word.charAt(i));
-            if (head == null) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node prev = null;
-        Node current = slow;
-
-        while (current != null) {
-            Node nextNode = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextNode;
-        }
-
-        Node firstHalf = head;
-        Node secondHalf = prev;
-
-        boolean isPalindrome = true;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                isPalindrome = false;
-                break;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        if (isPalindrome) {
+        if (result) {
             System.out.println("Result: \"" + word + "\" is a Palindrome.");
         } else {
             System.out.println("Result: \"" + word + "\" is NOT a Palindrome.");
         }
 
         System.out.println("Program Ended.");
+    }
+
+    public static boolean isPalindrome(String word, int start, int end) {
+
+        if (start >= end) {
+            return true;
+        }
+
+        if (word.charAt(start) != word.charAt(end)) {
+            return false;
+        }
+
+        return isPalindrome(word, start + 1, end - 1);
     }
 }
