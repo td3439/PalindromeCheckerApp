@@ -2,16 +2,18 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Palindrome Checker - Use Case 9");
+        System.out.println("Palindrome Checker - Use Case 10");
 
-        String word = "madam";
+        String input = "A man a plan a canal Panama";
 
-        boolean result = isPalindrome(word, 0, word.length() - 1);
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+
+        boolean result = isPalindrome(normalized, 0, normalized.length() - 1);
 
         if (result) {
-            System.out.println("Result: \"" + word + "\" is a Palindrome.");
+            System.out.println("Result: \"" + input + "\" is a Palindrome (ignoring spaces and case).");
         } else {
-            System.out.println("Result: \"" + word + "\" is NOT a Palindrome.");
+            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
         }
 
         System.out.println("Program Ended.");
