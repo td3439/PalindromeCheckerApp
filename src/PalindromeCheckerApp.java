@@ -1,41 +1,68 @@
 import java.util.*;
 
-
+/**
+ * UC13 - Performance Comparison of Palindrome Algorithms
+ */
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         String input = "A man a plan a canal Panama";
 
-        // Choose strategy dynamically
-        PalindromeStrategy strategy;
+        List<PalindromeStrategy> strategies = Arrays.asList(
+                new TwoPointerStrategy(),
+                new StackStrategy(),
+                new DequeStrategy()
+        );
 
-        // Change this to switch algorithm
-        strategy = new StackStrategy();
-        // strategy = new DequeStrategy();
+        for (PalindromeStrategy strategy : strategies) {
 
-        PalindromeContext context = new PalindromeContext(strategy);
+            long startTime = System.nanoTime();
 
-        boolean result = context.executeCheck(input);
+            boolean result = strategy.isPalindrome(input);
 
-        if (result) {
-            System.out.println("The input \"" + input + "\" is a Palindrome.");
-        } else {
-            System.out.println("The input \"" + input + "\" is NOT a Palindrome.");
+            long endTime = System.nanoTime();
+
+            long duration = endTime - startTime;
+
+            System.out.println("-----------------------------------");
+            System.out.println("Algorithm: " + strategy.getClass().getSimpleName());
+            System.out.println("Result: " + result);
+            System.out.println("Execution Time (nanoseconds): " + duration);
         }
     }
 }
 
-/**
- * Strategy Interface
- */
+/* Strategy Interface */
 interface PalindromeStrategy {
     boolean isPalindrome(String input);
 }
 
-/**
- * Stack-Based Implementation
- */
+/* Two Pointer Strategy (Fastest Approach) */
+class TwoPointerStrategy implements PalindromeStrategy {
+
+    public boolean isPalindrome(String input) {
+
+        if (input == null) return false;
+
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "")
+                .toLowerCase();
+
+        int left = 0;
+        int right = normalized.length() - 1;
+
+        while (left < right) {
+            if (normalized.charAt(left) != normalized.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+/* Stack Strategy */
 class StackStrategy implements PalindromeStrategy {
 
     public boolean isPalindrome(String input) {
@@ -56,14 +83,11 @@ class StackStrategy implements PalindromeStrategy {
                 return false;
             }
         }
-
         return true;
     }
 }
 
-/**
- * Deque-Based Implementation
- */
+/* Deque Strategy */
 class DequeStrategy implements PalindromeStrategy {
 
     public boolean isPalindrome(String input) {
@@ -84,23 +108,6 @@ class DequeStrategy implements PalindromeStrategy {
                 return false;
             }
         }
-
         return true;
-    }
-}
-
-/**
- * Context Class
- */
-class PalindromeContext {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean executeCheck(String input) {
-        return strategy.isPalindrome(input);
     }
 }
