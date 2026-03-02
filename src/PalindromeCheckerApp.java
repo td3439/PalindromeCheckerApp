@@ -1,34 +1,68 @@
+
+
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        System.out.println("Palindrome Checker - Use Case 10");
-
         String input = "A man a plan a canal Panama";
 
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        // Create object of PalindromeChecker
+        PalindromeChecker checker = new PalindromeChecker();
 
-        boolean result = isPalindrome(normalized, 0, normalized.length() - 1);
+        // Call encapsulated method
+        boolean result = checker.checkPalindrome(input);
 
+        // Display result
         if (result) {
-            System.out.println("Result: \"" + input + "\" is a Palindrome (ignoring spaces and case).");
+            System.out.println("The input \"" + input + "\" is a Palindrome (ignoring spaces and case).");
         } else {
-            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
+            System.out.println("The input \"" + input + "\" is NOT a Palindrome (ignoring spaces and case).");
         }
 
-        System.out.println("Program Ended.");
+        System.out.println("Program execution completed.");
     }
+}
 
-    public static boolean isPalindrome(String word, int start, int end) {
+/**
+ * PalindromeChecker Class
+ * ------------------------
+ * Responsibility:
+ * Handles palindrome validation logic only.
+ */
+class PalindromeChecker {
 
-        if (start >= end) {
-            return true;
-        }
+    /**
+     * Public method to check palindrome.
+     * Handles normalization + validation.
+     *
+     * @param input Original string
+     * @return true if palindrome, false otherwise
+     */
+    public boolean checkPalindrome(String input) {
 
-        if (word.charAt(start) != word.charAt(end)) {
+        if (input == null) {
             return false;
         }
 
-        return isPalindrome(word, start + 1, end - 1);
+        // Step 1: Normalize string
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "")
+                .toLowerCase();
+
+        // Step 2: Convert to char array (internal data structure)
+        char[] chars = normalized.toCharArray();
+
+        // Step 3: Two-pointer comparison
+        int start = 0;
+        int end = chars.length - 1;
+
+        while (start < end) {
+            if (chars[start] != chars[end]) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
     }
 }
